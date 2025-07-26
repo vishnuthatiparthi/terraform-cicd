@@ -34,12 +34,12 @@ jobs:
 
       - name: 🏗️ Terraform Init
         run: terraform init
-        working-directory: ./Terraform-practice/DAY-2-INSTANCE\ CREATE
+        working-directory: "./Terraform-practice/DAY-2-INSTANCE CREATE"
 
       - name: 🧪 Terraform Plan
         run: terraform plan
-        working-directory: ./Terraform-practice/DAY-2-INSTANCE\ CREATE
+        working-directory: "./Terraform-practice/DAY-2-INSTANCE CREATE"
 
       - name: 🚀 Terraform Apply
         run: terraform apply -auto-approve
-        working-directory: ./Terraform-practice/DAY-2-INSTANCE\ CREATE
+        working-directory: "./Terraform-practice/DAY-2-INSTANCE CREATE"
