@@ -1,37 +1,45 @@
-name: Terraform Apply (with GitHub Secrets)
+name: Terraform Apply
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./DAY-2-INSTANCE CREATE
-
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: ✅ Checkout this repo
+        uses: actions/checkout@v3
 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v3
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1  # ✅ updated region here
+      - name: 🔁 Clone Terraform-practice repo
+        run: git clone https://github.com/vishnuthatiparthi/Terraform-practice.git
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v3
-      with:
-        terraform_version: 1.7.5
+      - name: 📂 List folders for debug
+        run: ls -R
 
-    - name: Terraform Init
-      run: terraform init
+      - name: ⚙️ Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.6.6
 
-    - name: Terraform Plan
-      run: terraform plan
+      - name: 🔐 Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
+      - name: 🏗️ Terraform Init
+        run: terraform init
+        working-directory: ./Terraform-practice/DAY-2-INSTANCE\ CREATE
+
+      - name: 🧪 Terraform Plan
+        run: terraform plan
+        working-directory: ./Terraform-practice/DAY-2-INSTANCE\ CREATE
+
+      - name: 🚀 Terraform Apply
+        run: terraform apply -auto-approve
+        working-directory: ./Terraform-practice/DAY-2-INSTANCE\ CREATE
