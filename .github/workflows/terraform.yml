@@ -1,0 +1,36 @@
+name: Terraform Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Terraform Action (apply/destroy)'
+        required: true
+        default: 'apply'
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./DAY-2-INSTANCE CREATE
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.7.5
+
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Terraform Plan (Only on Apply)
+      if: github.event.inputs.action == 'apply'
+      run: terraform plan
+
+    - name: Terraform Apply or Destroy
+      run: terraform ${{ github.event.inputs.action }} -auto-approve
